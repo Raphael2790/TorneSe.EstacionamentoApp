@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TorneSe.EstacionamentoApp.Store;
 
 namespace TorneSe.EstacionamentoApp.Extensions;
 
-public static class AddBusinessHostBuilderExtensions
+public static class AddStoresHostBuilderExtensions
 {
-    public static IHostBuilder AddBusiness(this IHostBuilder hostBuilder)
+    public static IHostBuilder AddStores(this IHostBuilder hostBuilder)
     {
         hostBuilder.ConfigureServices(services =>
         {
-           
+            services.AddSingleton<VeiculosStore>();
         });
 
         return hostBuilder;
