@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TorneSe.EstacionamentoApp.Componentes;
@@ -16,7 +17,7 @@ public partial class EntradaVeiculosView : UserControl
     private int _pagina = 1;
     private const int _paginaInicial = 1;
     private int _porPagina = 20;
-    private double _totalPaginas = 0;
+    private int _totalPaginas = 0;
 
     private const string _componente = "Entrada";
 
@@ -24,7 +25,7 @@ public partial class EntradaVeiculosView : UserControl
     {
         InitializeComponent();
         _veiculosStore = veiculosStore;
-        _totalPaginas = Math.Ceiling((double)(_veiculosStore.VagasLivres.Count / _porPagina));
+        _totalPaginas = (int)Math.Ceiling(_veiculosStore.VagasLivres.Count / (double)_porPagina);
         MontarComponente();
     }
 
@@ -35,7 +36,7 @@ public partial class EntradaVeiculosView : UserControl
         vagasControl.Content = new VagasGridControl(vagas, _componente);
     }
 
-    private void ProximasVagas_ButtonClick(object sender, System.Windows.RoutedEventArgs e)
+    private async void ProximasVagas_ButtonClick(object sender, System.Windows.RoutedEventArgs e)
     {
         if (_pagina == _totalPaginas)
         {
@@ -43,16 +44,36 @@ public partial class EntradaVeiculosView : UserControl
             return;
         }
 
+        await Task.Delay(3000);
+
         _pagina += 1;
         MontarComponente();
     }
 
-    private void VoltarVagas_ButtonClick(object sender, RoutedEventArgs e)
+    private async void VoltarVagas_ButtonClick(object sender, RoutedEventArgs e)
     {
         if (_pagina is _paginaInicial)
             return;
-        
+
+        await Task.Delay(3000);
+
         _pagina -= 1;
         MontarComponente();
+    }
+
+    private void VagaBuscaTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (sender is not TextBox textbox)
+            return;
+
+        var vagas = _veiculosStore.VagasLivres.Where(v => v.NomeVaga.Contains(textbox.Text)).ToList();
+
+        if (!vagas.Any())
+        {
+            MessageBox.Show("Não há vagas com esse nome");
+            return;
+        }
+
+        vagasControl.Content = new VagasGridControl(vagas, _componente);
     }
 }
