@@ -34,6 +34,9 @@ public partial class EntradaVeiculosView : UserControl
         var vagas = _veiculosStore.VagasLivres.Skip((_pagina - 1) * _porPagina).Take(_porPagina).ToList();
 
         vagasControl.Content = new VagasGridControl(vagas, _componente);
+        buscaVagaTextBox.IsEnabled = true;
+        voltarButton.Visibility = Visibility.Visible;
+        proximoButton.Visibility = Visibility.Visible;
     }
 
     private async void ProximasVagas_ButtonClick(object sender, System.Windows.RoutedEventArgs e)
@@ -43,6 +46,12 @@ public partial class EntradaVeiculosView : UserControl
             MessageBox.Show("Não há mais vagas a serem carregadas");
             return;
         }
+
+        vagasControl.Content = new LoadingSquareControl();
+
+        buscaVagaTextBox.IsEnabled = false;
+        voltarButton.Visibility = Visibility.Hidden;
+        proximoButton.Visibility = Visibility.Hidden;
 
         await Task.Delay(3000);
 
@@ -54,6 +63,12 @@ public partial class EntradaVeiculosView : UserControl
     {
         if (_pagina is _paginaInicial)
             return;
+
+        vagasControl.Content = new LoadingSquareControl();
+
+        buscaVagaTextBox.IsEnabled = false;
+        voltarButton.Visibility = Visibility.Hidden;
+        proximoButton.Visibility = Visibility.Hidden;
 
         await Task.Delay(3000);
 

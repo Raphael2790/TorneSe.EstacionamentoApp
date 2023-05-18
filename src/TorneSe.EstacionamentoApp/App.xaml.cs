@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
+using Forms = System.Windows.Forms;
 using TorneSe.EstacionamentoApp.Extensions;
 
 namespace TorneSe.EstacionamentoApp;
@@ -11,6 +12,7 @@ namespace TorneSe.EstacionamentoApp;
 public partial class App : Application
 {
 	private readonly IHost _host;
+	private readonly Forms.NotifyIcon _notifyIcon;
 
 	public App()
 	{
@@ -21,6 +23,13 @@ public partial class App : Application
 			.AddFactories()
 			.AddViews()
 			.Build();
+
+		_notifyIcon = new Forms.NotifyIcon
+		{
+			Text = "Torne se Estacionamento App",
+			Visible = true,
+			Icon = new System.Drawing.Icon("Recursos/tornese.ico")
+		};
 	}
 
     protected override void OnStartup(StartupEventArgs e)
@@ -36,6 +45,8 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
 		_host.Dispose();
+
+		_notifyIcon.Dispose();
 
         base.OnExit(e);
     }
