@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System.Windows;
 using Forms = System.Windows.Forms;
 using TorneSe.EstacionamentoApp.Extensions;
+using System;
 
 namespace TorneSe.EstacionamentoApp;
 
@@ -12,35 +13,49 @@ namespace TorneSe.EstacionamentoApp;
 public partial class App : Application
 {
 	private readonly IHost _host;
-	private readonly Forms.NotifyIcon _notifyIcon;
+	private Forms.NotifyIcon _notifyIcon;
 
 	public App()
 	{
 		_host = Host
 			.CreateDefaultBuilder()
 			.AddStores()
+			.AddNotifications()
 			.AddBusiness()
 			.AddFactories()
 			.AddViews()
 			.Build();
-
-		_notifyIcon = new Forms.NotifyIcon
-		{
-			Text = "Torne se Estacionamento App",
-			Visible = true,
-			Icon = new System.Drawing.Icon("Recursos/tornese.ico")
-		};
 	}
 
     protected override void OnStartup(StartupEventArgs e)
     {
 		_host.Start();
 
+		_notifyIcon = _host.Services.GetRequiredService<Forms.NotifyIcon>();
+
+		//Menus
+		_notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
+		_notifyIcon.ContextMenuStrip.Items.Add("Sair", null, SairAplicacaoMenuStrip_Click);
+		_notifyIcon.Click += NotifyIcon_Click;
+
+		//Notificações
+		_notifyIcon.ShowBalloonTip(1000, "Entrada Veiculo", "Entrada realizada com sucesso do veiculo UHUHA-1918"
+			, Forms.ToolTipIcon.Info);
+		_notifyIcon.BalloonTipClicked += (s, e) => MessageBox.Show("Clicou no balão");
+
 		MainWindow = _host.Services.GetRequiredService<MainWindow>();
 		MainWindow.Show();
 
         base.OnStartup(e);
     }
+
+    private void NotifyIcon_Click(object? sender, EventArgs e)
+    {
+        MainWindow.WindowState = WindowState.Normal;
+		MainWindow.Activate();
+    }
+
+    private void SairAplicacaoMenuStrip_Click(object? sender, EventArgs e) => Shutdown();
 
     protected override void OnExit(ExitEventArgs e)
     {
