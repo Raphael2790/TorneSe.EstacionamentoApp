@@ -4,12 +4,12 @@ using TorneSe.EstacionamentoApp.Data.Dtos;
 
 namespace TorneSe.EstacionamentoApp.Store;
 
-public class VeiculosStore
+public class VagasStore
 {
     private readonly List<ResumoVaga> _vagasOcupadas;
     private readonly List<ResumoVaga> _vagasLivres;
 
-    public VeiculosStore()
+    public VagasStore()
     {
         _vagasOcupadas = new();
         _vagasLivres = new();
@@ -23,11 +23,11 @@ public class VeiculosStore
     private void CriarVagasLivres()
     {
         var vagasPrimeiroAndar = Enumerable.Range(1, 20)
-            .Select(i => new ResumoVaga($"A-{i}"))
+            .Select(i => new ResumoVaga(i, $"A-{i}"))
             .ToList();
 
         var vagasSegundoAndar = Enumerable.Range(1, 15)
-            .Select(i => new ResumoVaga($"B-{i}"))
+            .Select(i => new ResumoVaga(i, $"B-{i}"))
             .ToList();
 
         _vagasLivres.AddRange(vagasPrimeiroAndar);
@@ -37,14 +37,36 @@ public class VeiculosStore
     public void CriarVagasOcupadas()
     {
         var vagasOcupadasPrimeiroAndar = Enumerable.Range(1, 20)
-            .Select(i => new ResumoVaga($"A-{i}", "HGT-9878", "Golf/Volkswagen"))
+            .Select(i => new ResumoVaga(i,$"A-{i}", "HGT-9878", "Golf/Volkswagen"))
             .ToList();
 
         var vagasOcupadasSegundoAndar = Enumerable.Range(1, 15)
-            .Select(i => new ResumoVaga($"B-{i}", "NAH-0987", "Corsa/Chevrolet"))
+            .Select(i => new ResumoVaga(i, $"B-{i}", "NAH-0987", "Corsa/Chevrolet"))
             .ToList();
 
         _vagasOcupadas.AddRange(vagasOcupadasPrimeiroAndar);
         _vagasOcupadas.AddRange(vagasOcupadasSegundoAndar);
+    }
+
+    public void OcuparVaga(int idVaga)
+    {
+        var vaga = _vagasLivres.FirstOrDefault(v => v.IdVaga == idVaga);
+
+        if (vaga is not null)
+        {
+            _vagasLivres.Remove(vaga);
+            _vagasOcupadas.Add(vaga);
+        }
+    }
+
+    public void LiberarVaga(int idVaga)
+    {
+        var vaga = _vagasOcupadas.FirstOrDefault(v => v.IdVaga == idVaga);
+
+        if (vaga is not null)
+        {
+            _vagasOcupadas.Remove(vaga);
+            _vagasLivres.Add(vaga);
+        }
     }
 }
