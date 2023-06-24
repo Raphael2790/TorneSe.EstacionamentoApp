@@ -11,10 +11,12 @@ internal class WindowsNotificationService : INotificationService
     public WindowsNotificationService(NotifyIcon notifyIcon) 
         => _notifyIcon = notifyIcon;
 
-    public void Notificar(int intervalo, string titulo, string mensagem, string tipoIcone, EventHandler? handler = null)
+    public void Notificar(int intervalo, string titulo, string mensagem, EventHandler? handler = null)
     {
-        _notifyIcon.ShowBalloonTip(1000, "Entrada Veiculo", "Entrada realizada com sucesso do veiculo UHUHA-1918"
+        _notifyIcon.ShowBalloonTip(1000, titulo, mensagem
         , ToolTipIcon.Info);
-        _notifyIcon.BalloonTipClicked += (s, e) => MessageBox.Show("Clicou no balão");
+
+        if (handler is not null)
+            _notifyIcon.BalloonTipClicked += (s, e) => MessageBox.Show("Clicou no balão");
     }
 }

@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TorneSe.EstacionamentoApp.Componentes;
+using TorneSe.EstacionamentoApp.Notifications.Interfaces;
 using TorneSe.EstacionamentoApp.Store;
+using TorneSe.EstacionamentoApp.UI.Args;
 using TorneSe.EstacionamentoApp.UI.Interfaces;
 
 namespace TorneSe.EstacionamentoApp.Views;
@@ -16,6 +18,7 @@ public partial class EntradaVeiculosView : UserControl
 {
     private readonly VagasStore _veiculosStore;
     private readonly IVeiculoBusiness _veiculoBusiness;
+    private readonly INotificationService _notificationService;
 
     private int _pagina = 1;
     private const int _paginaInicial = 1;
@@ -24,12 +27,22 @@ public partial class EntradaVeiculosView : UserControl
 
     private const string _componente = "Entrada";
 
-    public EntradaVeiculosView(VagasStore veiculosStore, IVeiculoBusiness veiculoBusiness)
+    public EntradaVeiculosView(VagasStore veiculosStore, 
+                               IVeiculoBusiness veiculoBusiness,
+                               INotificationService notificationService)
     {
         InitializeComponent();
         _veiculosStore = veiculosStore;
         _totalPaginas = (int)Math.Ceiling(_veiculosStore.VagasLivres.Count / (double)_porPagina);
         _veiculoBusiness = veiculoBusiness;
+        _notificationService = notificationService;
+        MontarComponente();
+        veiculosStore.StoreChanged += VeiculosStore_StoreChanged;
+    }
+
+    private void VeiculosStore_StoreChanged(object? sender, VagasStoreEventArgs e)
+    {
+        _notificationService.Notificar(1000, "Entrada Veiculo Realizada", $"A vaga {e.ResumoVaga.NomeVaga} foi ocupada!");
         MontarComponente();
     }
 

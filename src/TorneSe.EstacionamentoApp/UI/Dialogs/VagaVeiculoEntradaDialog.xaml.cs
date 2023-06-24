@@ -129,6 +129,29 @@ public partial class VagaVeiculoEntradaDialog : Window
         return camposValidos;
     }
 
+    private bool ValidarCamposCondutor()
+    {
+        bool camposValidos = true;
+
+        if(string.IsNullOrWhiteSpace(nomeCondutorTextBox.Text))
+        {
+            nomeCondutorTextBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Red"));
+            nomeCondutorTextBox.BorderThickness = new Thickness(2);
+            nomeCondutorInvalidoTextBlock.Visibility = Visibility.Visible;
+            camposValidos = false;
+        }
+
+        if(string.IsNullOrWhiteSpace(documentoTextBox.Text))
+        {
+            documentoTextBox.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Red"));
+            documentoTextBox.BorderThickness = new Thickness(2);
+            documentoInvalidoTextBlock.Visibility = Visibility.Visible;
+            camposValidos = false;
+        }
+
+        return camposValidos;
+    }
+
     private void PlacaVeiculoComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
         if(placaVeiculoComboBox.SelectedItem is Veiculo veiculo)
@@ -191,11 +214,16 @@ public partial class VagaVeiculoEntradaDialog : Window
         anoInfoTextBlock.Text = _veiculo?.Ano;
     }
 
-    private void ConfirmarDados_Click(object sender, RoutedEventArgs e)
+    private async void ConfirmarDados_Click(object sender, RoutedEventArgs e)
     {
-        _veiculoBusiness.RealizarEntradaVeiculo(_veiculo!, _idVaga);
-        _store.OcuparVaga(_idVaga);
-        Close();
+        var camposValidos = ValidarCamposCondutor();
+
+        if (camposValidos)
+        {
+            await _veiculoBusiness.RealizarEntradaVeiculo(_veiculo!, _idVaga, nomeCondutorTextBox.Text, documentoTextBox.Text);
+            _store.OcuparVaga(_idVaga);
+            Close();
+        }
     }
 
     private void CancelarDados_Click(object sender, RoutedEventArgs e) 
