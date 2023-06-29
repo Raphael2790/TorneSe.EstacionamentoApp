@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TorneSe.EstacionamentoApp.Data.Contexto;
 using TorneSe.EstacionamentoApp.Data.DAO.Interfaces;
 using TorneSe.EstacionamentoApp.Data.Entidades;
@@ -14,7 +15,15 @@ public class ReservaVagaVeiculoDAO : IReservaVagaVeiculoDAO
 
     public async Task Inserir(ReservaVagaVeiculo reservaVagaVeiculo)
     {
-        await _contexto.ReservasVagasVeiculos.AddAsync(reservaVagaVeiculo);
-        await _contexto.SaveChangesAsync();
+        try
+        {
+            await _contexto.ReservasVagasVeiculos.AddAsync(reservaVagaVeiculo);
+
+            _ = await _contexto.SaveChangesAsync();
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

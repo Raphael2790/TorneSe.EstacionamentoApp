@@ -13,30 +13,14 @@ public class VagasStore
 
     public EventHandler<VagasStoreEventArgs>? StoreChanged;
 
-    public VagasStore()
+    public VagasStore(List<ResumoVaga> vagasLivres, List<ResumoVaga> vagasOcupadas)
     {
-        _vagasOcupadas = new();
-        _vagasLivres = new();
-        CriarVagasLivres();
-        CriarVagasOcupadas();
+        _vagasOcupadas = vagasOcupadas;
+        _vagasLivres = vagasLivres;
     }
 
     public IReadOnlyList<ResumoVaga> VagasOcupadas => _vagasOcupadas;
     public IReadOnlyList<ResumoVaga> VagasLivres => _vagasLivres;
-
-    private void CriarVagasLivres()
-    {
-        var vagasPrimeiroAndar = Enumerable.Range(1, 20)
-            .Select(i => new ResumoVaga(i, $"A-{i}"))
-            .ToList();
-
-        var vagasSegundoAndar = Enumerable.Range(1, 15)
-            .Select(i => new ResumoVaga(i, $"B-{i}"))
-            .ToList();
-
-        _vagasLivres.AddRange(vagasPrimeiroAndar);
-        _vagasLivres.AddRange(vagasSegundoAndar);
-    }
 
     public void CriarVagasOcupadas()
     {
