@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
-using TorneSe.EstacionamentoApp.Notifications.Interfaces;
+using TorneSe.EstacionamentoApp.UI.Notifications.Interfaces;
 
-namespace TorneSe.EstacionamentoApp.Notifications;
+namespace TorneSe.EstacionamentoApp.UI.Notifications;
 
 internal class WindowsNotificationService : INotificationService
 {
     private readonly NotifyIcon _notifyIcon;
 
-    public WindowsNotificationService(NotifyIcon notifyIcon) 
+    public WindowsNotificationService(NotifyIcon notifyIcon)
         => _notifyIcon = notifyIcon;
 
     public void Notificar(int intervalo, string titulo, string mensagem, EventHandler? handler = null)

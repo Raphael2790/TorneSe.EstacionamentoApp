@@ -1,4 +1,4 @@
-﻿namespace TorneSe.EstacionamentoApp.Enums;
+﻿namespace TorneSe.EstacionamentoApp.UI.Enums;
 
 public enum Paginas
 {

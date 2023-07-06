@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
-using TorneSe.EstacionamentoApp.Enums;
+using TorneSe.EstacionamentoApp.UI.Enums;
 
-namespace TorneSe.EstacionamentoApp.Factories.Interfaces;
+namespace TorneSe.EstacionamentoApp.UI.Factories.Interfaces;
 
 public interface IViewFactory
 {

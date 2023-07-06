@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Controls;
-using TorneSe.EstacionamentoApp.Enums;
-using TorneSe.EstacionamentoApp.Factories.Interfaces;
+using TorneSe.EstacionamentoApp.UI.Enums;
+using TorneSe.EstacionamentoApp.UI.Factories.Interfaces;
 using TorneSe.EstacionamentoApp.Views;
 
-namespace TorneSe.EstacionamentoApp.Factories;
+namespace TorneSe.EstacionamentoApp.UI.Factories;
 
 public sealed class ViewFactory : IViewFactory
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public ViewFactory(IServiceProvider serviceProvider) 
+    public ViewFactory(IServiceProvider serviceProvider)
         => _serviceProvider = serviceProvider;
 
     public UserControl CriarView(Paginas pagina) => pagina switch

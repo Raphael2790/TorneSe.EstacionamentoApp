@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TorneSe.EstacionamentoApp.Notifications.Interfaces;
+namespace TorneSe.EstacionamentoApp.UI.Notifications.Interfaces;
 
 public interface INotificationService
 {

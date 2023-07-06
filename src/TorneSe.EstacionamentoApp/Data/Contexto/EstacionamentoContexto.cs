@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TorneSe.EstacionamentoApp.Data.Entidades;
+using TorneSe.EstacionamentoApp.Core.Entidades;
 
 namespace TorneSe.EstacionamentoApp.Data.Contexto;
 

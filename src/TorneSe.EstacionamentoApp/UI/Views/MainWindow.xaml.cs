@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using TorneSe.EstacionamentoApp.Enums;
-using TorneSe.EstacionamentoApp.Factories.Interfaces;
+using TorneSe.EstacionamentoApp.UI.Enums;
+using TorneSe.EstacionamentoApp.UI.Factories.Interfaces;
 
 namespace TorneSe.EstacionamentoApp;
 

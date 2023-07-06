@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TorneSe.EstacionamentoApp.Factories;
-using TorneSe.EstacionamentoApp.Factories.Interfaces;
+using TorneSe.EstacionamentoApp.UI.Factories;
+using TorneSe.EstacionamentoApp.UI.Factories.Interfaces;
 
-namespace TorneSe.EstacionamentoApp.Extensions;
+namespace TorneSe.EstacionamentoApp.UI.Extensions;
 
 public static class AddFactoriesHostBuilderExtensions
 {

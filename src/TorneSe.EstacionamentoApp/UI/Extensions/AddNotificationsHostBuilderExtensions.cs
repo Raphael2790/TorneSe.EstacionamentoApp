@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows.Forms;
-using TorneSe.EstacionamentoApp.Notifications;
-using TorneSe.EstacionamentoApp.Notifications.Interfaces;
+using TorneSe.EstacionamentoApp.UI.Notifications;
+using TorneSe.EstacionamentoApp.UI.Notifications.Interfaces;
 
-namespace TorneSe.EstacionamentoApp.Extensions;
+namespace TorneSe.EstacionamentoApp.UI.Extensions;
 
 public static class AddNotificationsHostBuilderExtensions
 {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using TorneSe.EstacionamentoApp.Views;
 
-namespace TorneSe.EstacionamentoApp.Extensions;
+namespace TorneSe.EstacionamentoApp.UI.Extensions;
 
 public static class AddViewsHostBuilderExtensions
 {
