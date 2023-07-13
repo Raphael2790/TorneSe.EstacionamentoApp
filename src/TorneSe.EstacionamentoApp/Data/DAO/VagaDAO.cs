@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading.Tasks;
 using TorneSe.EstacionamentoApp.Data.Contexto;
 using TorneSe.EstacionamentoApp.Data.DAO.Interfaces;
@@ -16,23 +15,27 @@ public class VagaDAO : IVagaDAO
     public async Task<bool> ExisteVagaOcupadaComVeiculoInformado(int idVeiculo) 
         => await _contexto.Vagas.AnyAsync(v => v.IdVeiculo == idVeiculo && v.Ocupada);
 
-    public async Task MarcarComoOcupada(int idVaga, int idVeiculo)
+    public async Task MarcarComoLivre(int idVaga)
     {
-        try
+        var vaga = await _contexto.Vagas.FirstOrDefaultAsync(v => v.Id == idVaga);
+
+        if (vaga is not null)
         {
-            var vaga = await _contexto.Vagas.FirstOrDefaultAsync(v => v.Id == idVaga);
-
-            if (vaga is not null)
-            {
-                vaga.Ocupada = true;
-                vaga.IdVeiculo = idVeiculo;
-            }
-
+            vaga.Ocupada = false;
+            vaga.IdVeiculo = null;
             await _contexto.SaveChangesAsync();
         }
-        catch (System.Exception ex)
+    }
+
+    public async Task MarcarComoOcupada(int idVaga, int idVeiculo)
+    {
+        var vaga = await _contexto.Vagas.FirstOrDefaultAsync(v => v.Id == idVaga);
+
+        if (vaga is not null)
         {
-            Console.WriteLine(ex.Message);
+            vaga.Ocupada = true;
+            vaga.IdVeiculo = idVeiculo;
+            await _contexto.SaveChangesAsync();
         }
     }
 }

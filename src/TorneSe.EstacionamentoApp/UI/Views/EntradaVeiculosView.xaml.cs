@@ -50,7 +50,7 @@ public partial class EntradaVeiculosView : UserControl
     {
         var vagas = _veiculosStore.VagasLivres.Skip((_pagina - 1) * _porPagina).Take(_porPagina).ToList();
 
-        vagasControl.Content = new VagasGridControl(vagas, _componente, _veiculoBusiness, _veiculosStore);
+        vagasControl.Content = new VagasGridControl(vagas, _componente, _veiculoBusiness, _veiculosStore, null!);
         buscaVagaTextBox.IsEnabled = true;
         voltarButton.Visibility = Visibility.Visible;
         proximoButton.Visibility = Visibility.Visible;
@@ -106,6 +106,6 @@ public partial class EntradaVeiculosView : UserControl
             return;
         }
 
-        vagasControl.Content = new VagasGridControl(vagas, _componente, _veiculoBusiness, _veiculosStore);
+        vagasControl.Content = new VagasGridControl(vagas, _componente, _veiculoBusiness, _veiculosStore, null!);
     }
 }

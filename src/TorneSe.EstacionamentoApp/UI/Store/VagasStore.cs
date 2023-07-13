@@ -8,8 +8,8 @@ namespace TorneSe.EstacionamentoApp.UI.Store;
 
 public class VagasStore
 {
-    private readonly List<ResumoVaga> _vagasOcupadas;
-    private readonly List<ResumoVaga> _vagasLivres;
+    private List<ResumoVaga> _vagasOcupadas;
+    private List<ResumoVaga> _vagasLivres;
 
     public EventHandler<VagasStoreEventArgs>? StoreChanged;
 
@@ -32,6 +32,7 @@ public class VagasStore
             vaga.Placa = placa;
             _vagasLivres.Remove(vaga);
             _vagasOcupadas.Add(vaga);
+            _vagasOcupadas = _vagasOcupadas.OrderBy(v => v.IdVaga).ToList();
             StoreChanged?.Invoke(this, new VagasStoreEventArgs(vaga));
         }
     }
@@ -44,6 +45,7 @@ public class VagasStore
         {
             _vagasOcupadas.Remove(vaga);
             _vagasLivres.Add(vaga);
+            _vagasLivres = _vagasLivres.OrderBy(v => v.IdVaga).ToList();
             StoreChanged?.Invoke(this, new VagasStoreEventArgs(vaga));
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading.Tasks;
+using TorneSe.EstacionamentoApp.Core.Comum;
 using TorneSe.EstacionamentoApp.Core.Entidades;
 using TorneSe.EstacionamentoApp.Data.Contexto;
 using TorneSe.EstacionamentoApp.Data.DAO.Interfaces;
@@ -14,18 +14,23 @@ public class ReservaVagaVeiculoDAO : IReservaVagaVeiculoDAO
     public ReservaVagaVeiculoDAO(EstacionamentoContexto contexto) 
         => _contexto = contexto;
 
+    public async Task Atualizar(ReservaVagaVeiculo reservaVaga, ResumoSaida resumoSaida)
+    {
+        reservaVaga.HoraSaida = resumoSaida.HoraSaida;
+        reservaVaga.ValorCobrado = resumoSaida.ValorTotal;
+        reservaVaga.FormaPagamento = resumoSaida.FormaPagamento;
+        reservaVaga.HorasUtilizadas = resumoSaida.TotalHoras;
+
+        _contexto.ReservasVagasVeiculos.Update(reservaVaga);
+
+        _ = await _contexto.SaveChangesAsync();
+    }
+
     public async Task Inserir(ReservaVagaVeiculo reservaVagaVeiculo)
     {
-        try
-        {
-            await _contexto.ReservasVagasVeiculos.AddAsync(reservaVagaVeiculo);
+        await _contexto.ReservasVagasVeiculos.AddAsync(reservaVagaVeiculo);
 
-            _ = await _contexto.SaveChangesAsync();
-        }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        _ = await _contexto.SaveChangesAsync();
     }
 
     public async Task<ReservaVagaVeiculo?> ObterReservaVagaVeiculo(int idVeiculo, int idVaga)
