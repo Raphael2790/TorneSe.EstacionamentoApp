@@ -5,6 +5,11 @@ VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TorneSe.EstacionamentoApp", "src\TorneSe.EstacionamentoApp\TorneSe.EstacionamentoApp.csproj", "{F4F4ECAA-9E59-4E4F-A48C-EF87B242F099}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{B0A66670-6AA2-4A98-A9C0-ABF30260AB1D}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.md = Readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
