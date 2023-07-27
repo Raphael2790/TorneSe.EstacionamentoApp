@@ -1,6 +1,10 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
+using TorneSe.EstacionamentoApp.Business.Interfaces;
+using TorneSe.EstacionamentoApp.Core.Comum;
 
 namespace TorneSe.EstacionamentoApp.Views;
 
@@ -9,21 +13,29 @@ namespace TorneSe.EstacionamentoApp.Views;
 /// </summary>
 public partial class RelatoriosView : UserControl
 {
-    public RelatoriosView()
+    private readonly IReservaBusiness _reservaBusiness;
+
+    public RelatoriosView(IReservaBusiness reservaBusiness)
     {
         InitializeComponent();
+        _reservaBusiness = reservaBusiness;
         MontarComponente();
     }
 
-    private void MontarComponente()
+    private async void MontarComponente()
     {
         //Dados ficticios de forma pagamento
+
+        ResumoOcupacao porcentagensVagas = await _reservaBusiness.ObterPorcentagemOcupacao();
+        List<ResumoFaturamentoFormaPagamento> valorFaturmentoPorFormaPagamento = await _reservaBusiness.ObterValorFaturamentoPorFormaPagamento();
+        List<ResumoFaturamentoMensal> valorFatumentoMensal = await _reservaBusiness.ObterValorFaturamentoUltimosMeses();
+
         colunasChart.Series.Clear();
 
         colunasChart.AxisX.Add(new Axis
         {
             Title = "Formas de Pagamento",
-            Labels = new[] { "Dinheiro", "Cartão de Credito", "Pix" }
+            Labels = valorFaturmentoPorFormaPagamento.Select(x => x.FormaPagamento.ToString()).ToList(),
         });
 
         colunasChart.AxisY.Add(new Axis
@@ -39,12 +51,12 @@ public partial class RelatoriosView : UserControl
                 Stroke = System.Windows.Media.Brushes.White
             },
             MinValue = 0,
-            MaxValue = 10000
+            MaxValue = valorFaturmentoPorFormaPagamento.Max(x => x.ValorAgregado) + 1000
         });
 
         var columnSeries = new ColumnSeries
         {
-            Values = new ChartValues<double> { 4000, 7000, 2000 },
+            Values = new ChartValues<double>(valorFaturmentoPorFormaPagamento.Select(x => x.ValorAgregado)),
             Title = "Recebimentos por forma pagamento",
             DataLabels = true,
             LabelPoint = point => point.Y.ToString("C"),
@@ -61,18 +73,18 @@ public partial class RelatoriosView : UserControl
         // Crie uma instância da Series para armazenar os dados do gráfico
         var ocupadas = new PieSeries
         {
-            Values = new ChartValues<double> { 40 },
+            Values = new ChartValues<double> { porcentagensVagas.Ocupadas },
             DataLabels = true,
-            Title = "Ocupadas",
+            Title = nameof(porcentagensVagas.Ocupadas),
             Fill = System.Windows.Media.Brushes.Red,
             LabelPoint = point => $"{point.Y}%"
         };
 
         var livres = new PieSeries
         {
-            Values = new ChartValues<double> { 60 },
+            Values = new ChartValues<double> { porcentagensVagas.Livres },
             DataLabels = true,
-            Title = "Livres",
+            Title = nameof(porcentagensVagas.Livres),
             Fill = System.Windows.Media.Brushes.Green,
             LabelPoint = point => $"{point.Y}%"
         };
@@ -84,7 +96,7 @@ public partial class RelatoriosView : UserControl
         linhasChart.AxisX.Add(new Axis
         {
             Title = "Mês",
-            Labels = new[] { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun" }
+            Labels = valorFatumentoMensal.Select(x => x.Mes).ToList(),
         });
 
         linhasChart.AxisY.Add(new Axis
@@ -100,12 +112,12 @@ public partial class RelatoriosView : UserControl
                 Stroke = System.Windows.Media.Brushes.White
             },
             MinValue = 0,
-            MaxValue = 30000
+            MaxValue = valorFatumentoMensal.Max(x => x.ValorAgregado) + 1000
         });
 
         var series = new LineSeries
         {
-            Values = new ChartValues<double> { 4000, 7000, 2900, 9000, 5000, 9900 },
+            Values = new ChartValues<double>(valorFatumentoMensal.Select(x => x.ValorAgregado)),
             Title = "Faturamento Mensal",
             DataLabels = true,
             LabelPoint = point => point.Y.ToString("C"),

@@ -69,6 +69,9 @@ public partial class App : Application
 
 		contexto.Database.EnsureCreated();
 
+		if(contexto.Vagas.Any())
+			return;
+
         var vagasPrimeiroAndar = Enumerable.Range(1, 20)
            .Select(i => new Vaga() { Andar = 1, Codigo = "A", Numero = i, Ocupada = false })
            .ToList();

@@ -12,6 +12,7 @@ public static class AddBusinessHostBuilderExtensions
         hostBuilder.ConfigureServices(services =>
         {
             services.AddTransient<IVeiculoBusiness, VeiculoBusiness>();
+            services.AddTransient<IReservaBusiness, ReservaBusiness>();
         });
 
         return hostBuilder;
