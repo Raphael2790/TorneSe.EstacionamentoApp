@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,10 +38,39 @@ public class ReservaVagaVeiculoDAO : IReservaVagaVeiculoDAO
         _ = await _contexto.SaveChangesAsync();
     }
 
+    public async Task<IEnumerable<ReservaVagaVeiculo>> ObterDadosRelatorio(DateTime dataInicial, DateTime dataFinal) 
+        => await _contexto.ReservasVagasVeiculos
+             .Include(rv => rv.Vaga)
+             .Include(rv => rv.Veiculo)
+             .Where(rv => rv.HoraSaida != null
+                     && rv.ValorCobrado != null
+                     && rv.HoraSaida >= dataInicial
+                     && rv.HoraSaida <= dataFinal)
+             .ToListAsync();
+
+    public async Task<int> ObterEntradasNaUltimaHora() 
+        => await _contexto.ReservasVagasVeiculos
+            .Where(rv => rv.HoraEntrada >= DateTime.Now.AddHours(-1))
+            .CountAsync();
+
     public async Task<List<ReservaVagaFormaPagamentoDto>> ObterFaturamentoPorFormaPagamento() 
         => await _contexto.ReservasVagasVeiculos
                 .Where(rv => rv.HoraSaida != null
                        && rv.ValorCobrado != null && rv.FormaPagamento != null)
+                .Select(rv => new ReservaVagaFormaPagamentoDto
+                {
+                    FormaPagamento = (FormaPagamento)rv.FormaPagamento!,
+                    ValorCobrado = rv.ValorCobrado!.Value
+                })
+                .ToListAsync();
+
+    public async Task<List<ReservaVagaFormaPagamentoDto>> ObterFaturamentoPorFormaPagamento(DateTime dataInicio, DateTime dataFim) 
+        => await _contexto.ReservasVagasVeiculos
+                .Where(rv => rv.HoraSaida != null
+                            && rv.ValorCobrado != null
+                            && rv.FormaPagamento != null
+                            && rv.HoraSaida >= dataInicio
+                            && rv.HoraSaida <= dataFim)
                 .Select(rv => new ReservaVagaFormaPagamentoDto
                 {
                     FormaPagamento = (FormaPagamento)rv.FormaPagamento!,
@@ -58,6 +88,39 @@ public class ReservaVagaVeiculoDAO : IReservaVagaVeiculoDAO
                     ValorCobrado = rv.ValorCobrado!.Value
                 })
                 .ToListAsync();
+
+    public async Task<List<ReservaVagaFaturamentoDto>> ObterFaturamentoPorMes(DateTime dataInicio, DateTime dataFim)
+    {
+        return await _contexto.ReservasVagasVeiculos
+                .Where(rv => rv.HoraSaida != null
+                       && rv.ValorCobrado != null
+                       && rv.HoraSaida >= dataInicio
+                       && rv.HoraSaida <= dataFim)
+                .Select(rv => new ReservaVagaFaturamentoDto
+                {
+                    HoraSaida = rv.HoraSaida!.Value,
+                    ValorCobrado = rv.ValorCobrado!.Value
+                })
+                .ToListAsync();
+    }
+
+    public async Task<ReservaVagaVeiculo?> ObterInformacoesUltimaEntrada() 
+        => await _contexto.ReservasVagasVeiculos
+                    .Include(rv => rv.Vaga)
+                    .Include(rv => rv.Veiculo)
+                    .Where(rv => rv.HoraSaida == null
+                                 && rv.ValorCobrado == null)
+                    .OrderByDescending(rv => rv.HoraEntrada)
+                    .FirstOrDefaultAsync();
+
+    public async Task<ReservaVagaVeiculo?> ObterInformacoesUltimaSaida() 
+        => await _contexto.ReservasVagasVeiculos
+                    .Include(rv => rv.Vaga)
+                    .Include(rv => rv.Veiculo)
+                    .Where(rv => rv.HoraSaida != null
+                                 && rv.ValorCobrado != null)
+                    .OrderByDescending(rv => rv.HoraSaida)
+                    .FirstOrDefaultAsync();
 
     public async Task<ReservaVagaVeiculo?> ObterReservaVagaVeiculo(int idVeiculo, int idVaga)
         => await _contexto.ReservasVagasVeiculos

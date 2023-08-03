@@ -168,6 +168,7 @@
                 <Button
                     Margin="10,0,0,0"
                     Background="Transparent"
+                    Click="FaturamentoMensalButtonFilter_Click"
                     Foreground="DodgerBlue">
                     <Button.Content>
                         <materialIcons:MaterialIcon Kind="Filter" />
@@ -229,6 +230,7 @@
                 <Button
                     Margin="10,0,0,0"
                     Background="Transparent"
+                    Click="FaturamentoPorFormaPagamentoButtonFilter_Click"
                     Foreground="DodgerBlue">
                     <Button.Content>
                         <materialIcons:MaterialIcon Kind="Filter" />
@@ -255,14 +257,15 @@
                 FontSize="10"
                 FontWeight="Bold"
                 Foreground="White"
-                Text="Exportar" />
+                Text="Exportar Faturamento Mensal Selecionado" />
             <Button
                 Width="100"
                 Height="20"
-                Margin="5"
+                Margin="40,5,5,5"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Background="Transparent"
+                Click="ExportarDadosReservasButton_Click"
                 Foreground="Green">
                 <Button.Content>
                     <materialIcons:MaterialIcon Kind="Download" />

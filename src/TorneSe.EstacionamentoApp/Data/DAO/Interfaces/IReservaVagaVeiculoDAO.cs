@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TorneSe.EstacionamentoApp.Core.Comum;
 using TorneSe.EstacionamentoApp.Core.Entidades;
@@ -10,7 +11,13 @@ public interface IReservaVagaVeiculoDAO
 {
     Task Atualizar(ReservaVagaVeiculo reservaVaga, ResumoSaida resumoSaida);
     Task Inserir(ReservaVagaVeiculo reservaVagaVeiculo);
+    Task<IEnumerable<ReservaVagaVeiculo>> ObterDadosRelatorio(DateTime dataInicial, DateTime dataFinal);
+    Task<int> ObterEntradasNaUltimaHora();
     Task<List<ReservaVagaFormaPagamentoDto>> ObterFaturamentoPorFormaPagamento();
+    Task<List<ReservaVagaFormaPagamentoDto>> ObterFaturamentoPorFormaPagamento(DateTime dataInicio, DateTime dataFim);
     Task<List<ReservaVagaFaturamentoDto>> ObterFaturamentoPorMes();
+    Task<List<ReservaVagaFaturamentoDto>> ObterFaturamentoPorMes(DateTime dataInicio, DateTime dataFim);
+    Task<ReservaVagaVeiculo?> ObterInformacoesUltimaEntrada();
+    Task<ReservaVagaVeiculo?> ObterInformacoesUltimaSaida();
     Task<ReservaVagaVeiculo?> ObterReservaVagaVeiculo(int idVeiculo, int idVaga);
 }
