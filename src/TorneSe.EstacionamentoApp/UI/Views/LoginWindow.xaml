@@ -9,7 +9,7 @@
     Width="400"
     Height="500"
     ResizeMode="NoResize"
-    WindowStartupLocation="CenterOwner"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Grid>
         <Grid.Background>
@@ -79,6 +79,7 @@
                     BorderThickness="2"
                     Click="LoginButton_Click"
                     Content="Login"
+                    Cursor="Hand"
                     FontWeight="Bold"
                     Foreground="White" />
                 <Button
@@ -90,6 +91,7 @@
                     BorderThickness="2"
                     Click="CancelarButton_Click"
                     Content="Cancelar"
+                    Cursor="Hand"
                     FontWeight="Bold"
                     Foreground="White" />
             </StackPanel>

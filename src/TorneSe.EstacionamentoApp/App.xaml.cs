@@ -10,6 +10,8 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using TorneSe.EstacionamentoApp.Core.Entidades;
+using TorneSe.EstacionamentoApp.Business.Services.Interfaces;
+using TorneSe.EstacionamentoApp.Core.Enums;
 using TorneSe.EstacionamentoApp.UI.Views;
 
 namespace TorneSe.EstacionamentoApp;
@@ -29,6 +31,7 @@ public partial class App : Application
 			.AddDatabase()
 			.AddStores()
 			.AddNotifications()
+            .AddServices()
 			.AddBusiness()
 			.AddFactories()
 			.AddViews()
@@ -64,14 +67,41 @@ public partial class App : Application
     private void SeedDatabase()
     {
         var contexto = _host.Services.GetRequiredService<EstacionamentoContexto>();
+        var criptografia = _host.Services.GetRequiredService<ICriptografiaService>();
 
-		if(contexto.Database.GetPendingMigrations().Any())
-			contexto.Database.Migrate();
+        if (contexto.Database.GetPendingMigrations().Any())
+            contexto.Database.Migrate();
 
-		contexto.Database.EnsureCreated();
+        contexto.Database.EnsureCreated();
 
-		if(contexto.Vagas.Any())
-			return;
+        CadastrarVagasSeNecessario(contexto);
+        CadastrarAdminSeNecessario(contexto, criptografia);
+    }
+
+    private void CadastrarAdminSeNecessario(EstacionamentoContexto contexto, ICriptografiaService criptografia)
+    {
+        if (contexto.Usuarios.Any())
+            return;
+
+        var admin = new Usuario()
+        {
+            Nome = "Administrador",
+            Login = "admin",
+            Senha = criptografia.CalcularMD5Hash("admin"),
+            Ativo = true,
+            DataCadastro = DateTime.Now,
+            Email = "admin@admin.com",
+            TipoUsuario = TipoUsuario.Administrador
+        };
+
+        contexto.Usuarios.Add(admin);
+        contexto.SaveChanges();
+    }
+
+    private static void CadastrarVagasSeNecessario(EstacionamentoContexto contexto)
+    {
+        if (contexto.Vagas.Any())
+            return;
 
         var vagasPrimeiroAndar = Enumerable.Range(1, 20)
            .Select(i => new Vaga() { Andar = 1, Codigo = "A", Numero = i, Ocupada = false })
@@ -81,9 +111,9 @@ public partial class App : Application
             .Select(i => new Vaga() { Andar = 2, Codigo = "B", Numero = i, Ocupada = false })
             .ToList();
 
-		contexto.Vagas.AddRange(vagasPrimeiroAndar);
-		contexto.Vagas.AddRange(vagasSegundoAndar);
-		contexto.SaveChanges();
+        contexto.Vagas.AddRange(vagasPrimeiroAndar);
+        contexto.Vagas.AddRange(vagasSegundoAndar);
+        contexto.SaveChanges();
     }
 
     private void NotifyIcon_Click(object? sender, EventArgs e)

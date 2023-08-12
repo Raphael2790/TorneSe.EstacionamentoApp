@@ -49,9 +49,11 @@ public sealed class ReservaBusiness : IReservaBusiness
         var porcentagemVagasLivres = (vagasLivres * 100) / (double)totalVagas;
 
         return new ResumoOcupacao
-        {
+        {   
+            QuantidadeOcupadas = vagasOcupadas,
             Ocupadas = Math.Round(porcentagemVagasOcupadas, 2),
-            Livres = Math.Round(porcentagemVagasLivres, 2)
+            Livres = Math.Round(porcentagemVagasLivres, 2),
+            QuantidadeLivres = vagasLivres
         };
     }
 

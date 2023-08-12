@@ -169,6 +169,7 @@
                     Margin="10,0,0,0"
                     Background="Transparent"
                     Click="FaturamentoMensalButtonFilter_Click"
+                    Cursor="Hand"
                     Foreground="DodgerBlue">
                     <Button.Content>
                         <materialIcons:MaterialIcon Kind="Filter" />
@@ -231,6 +232,7 @@
                     Margin="10,0,0,0"
                     Background="Transparent"
                     Click="FaturamentoPorFormaPagamentoButtonFilter_Click"
+                    Cursor="Hand"
                     Foreground="DodgerBlue">
                     <Button.Content>
                         <materialIcons:MaterialIcon Kind="Filter" />
@@ -266,6 +268,7 @@
                 VerticalAlignment="Center"
                 Background="Transparent"
                 Click="ExportarDadosReservasButton_Click"
+                Cursor="Hand"
                 Foreground="Green">
                 <Button.Content>
                     <materialIcons:MaterialIcon Kind="Download" />

@@ -32,6 +32,8 @@ public static class AddStoresHostBuilderExtensions
 
                 return store;
             });
+
+            services.AddSingleton<UsuarioStore>();
         });
 
         return hostBuilder;
