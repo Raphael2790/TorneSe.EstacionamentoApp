@@ -58,7 +58,7 @@ public partial class App : Application
 		_notifyIcon.ContextMenuStrip.Items.Add("Sair", null, SairAplicacaoMenuStrip_Click);
 		_notifyIcon.Click += NotifyIcon_Click;
 
-		MainWindow = _host.Services.GetRequiredService<LoginWindow>();
+		MainWindow = _host.Services.GetRequiredService<MainWindow>();
 		MainWindow.Show();
 
         base.OnStartup(e);
