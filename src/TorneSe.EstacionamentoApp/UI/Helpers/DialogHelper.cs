@@ -5,6 +5,7 @@ using System.Windows;
 using System;
 using TorneSe.EstacionamentoApp.Core.Comum;
 using TorneSe.EstacionamentoApp.Core.Entidades;
+using WindowsForms = System.Windows.Forms;
 
 namespace TorneSe.EstacionamentoApp.UI.Helpers;
 
@@ -209,5 +210,23 @@ public static class DialogHelper
             // Imprimir o conteúdo
             printDialog.PrintDocument(document.DocumentPaginator, "Ticket de Estacionamento");
         }
+    }
+
+    public static string ObterPathImagemAvatarUsuario()
+    {
+        string pathImagemAvatarUsuario = string.Empty;
+
+        WindowsForms.OpenFileDialog openFileDialog = new()
+        {
+            Filter = "Arquivos de Imagem (*.jpg;*.jpeg;*.gif;*.png;*.bmp)|*.jpg;*.jpeg;*.gif;*.png;*.bmp|Todos arquivos (*.*)|*.*",
+            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)
+        };
+
+        if (openFileDialog.ShowDialog() == WindowsForms.DialogResult.OK)
+        {
+            pathImagemAvatarUsuario = openFileDialog.FileName;
+        }
+
+        return pathImagemAvatarUsuario;
     }
 }

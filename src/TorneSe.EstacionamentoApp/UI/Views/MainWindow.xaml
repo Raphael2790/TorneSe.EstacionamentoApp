@@ -106,6 +106,7 @@
                 </StackPanel>
             </Button>
             <Button
+                x:Name="relatoriosButton"
                 Click="MenuItem_Click"
                 CommandParameter="Relatorios"
                 Style="{StaticResource MenuItem}">
@@ -122,6 +123,7 @@
                 </StackPanel>
             </Button>
             <Button
+                x:Name="usuariosButton"
                 Click="MenuItem_Click"
                 CommandParameter="Usuarios"
                 Style="{StaticResource MenuItem}">
@@ -138,6 +140,7 @@
                 </StackPanel>
             </Button>
             <Button
+                x:Name="configButton"
                 Click="MenuItem_Click"
                 CommandParameter="Configuracoes"
                 Style="{StaticResource MenuItem}">
